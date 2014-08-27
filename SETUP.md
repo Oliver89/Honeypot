@@ -89,3 +89,37 @@ Save and exit the file, then prepare the sshd for use:
 	sudo ssh-keygen -t dsa -f /usr/local/etc/ssh/ssh_host_dsa_key
 
 Press return twice to use a blank passphrase when prompted.
+
+STARTING SSHD
+-------------
+
+Execute the following commands to start sshd:
+
+	sudo cp /usr/local/etc/ssh/ssh_host_dsa_key /usr/local/etc
+	
+	sudo cp /home/ec2-user/ssh-source/openssh-5.8p1/sshd
+
+You will see a message saying "Could not load host key: /use/loca/etc/ssh_host_rsa_key", but that does not stop the sshd from
+running.
+
+Exectue the following to verify that sshd is listening on port 2222:
+
+	netstat -an | more
+
+You should see a LISTENING process on port 2222, and another on port 22.
+
+The process listening on 2222 is the sshd that has just been compiled, and the process listening on port 22 is the built-in sshd Amazon
+placed in the virtual machine.
+
+ADJUSTING AWS FIREWALL
+----------------------
+
+Open a browser and go to 
+
+https://console.aws.amazon.com/ec2
+
+Log in with your Amazon account. From the dropdown in the top let-hand corner, select "EC2", then "Instances" from the menu on the left.
+The category "Security Groups" will be visible in the ribbon above your instance list. Note which security group in which the instance exists.
+
+In the panel on the left, select "Security Groups", and (unless the security group is being used for other instances), select the security group
+relevant to the instance you wish to run as a honeypot. In the lower panel, select the "Inbound" tab. 
